@@ -1,0 +1,21 @@
+run.config:
+    engine: elixir
+
+    engine.config:
+      runtime: elixir-1.5
+      erlang_runtime: erlang-20
+
+    dev_packages: 
+      - nodejs
+      - inotify-tools
+
+    cache_dirs:
+      - assets/node_modules
+
+    extra_path_dirs:
+      - assets/node_modules/.bin
+
+    fs_watch: true
+
+    extra_steps:
+      - cd assets && npm install
