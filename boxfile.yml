@@ -19,3 +19,10 @@ run.config:
 
     extra_steps:
       - cd assets && npm install
+
+deploy.config: 
+    extra_steps:
+      - mix phx.digest
+
+web.main:
+  start: node-start mix phx.server
