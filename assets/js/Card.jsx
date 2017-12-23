@@ -1,9 +1,9 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 
-class Card extends Component {
+class Card extends PureComponent {
   render() {
     const { image_url, title, artist, bpm } = this.props;
-    
+
     return (
       <article className="media">
         <figure className="media-left">
@@ -15,7 +15,7 @@ class Card extends Component {
           <p>
             <strong>{title} - {artist}</strong>
             <br />
-            {bpm} BPM
+            {Math.round(bpm)} BPM
            </p>
         </div>
       </article>

@@ -2,30 +2,76 @@ import React, { Component } from "react";
 import Card from "./Card.jsx";
 
 class App extends Component {
+  constructor() {
+    super();
+    this.state = {
+      searchText: "",
+      isLoading: false,
+      isValid: false,
+      items: []
+    }
+
+    this.handleSearchClick = this.handleSearchClick.bind(this);
+    this.handleInput = this.handleInput.bind(this);
+  }
+
+  handleInput(event) {
+    this.setState({
+      searchText: event.target.value
+    });
+  }
+
+  handleSearchClick(event) {
+    const { searchText, isValid, isLoading } = this.state;
+
+    if (!isLoading) {
+      this.setState({
+        isLoading: true,
+        isValid: false
+      })
+
+      this.search(searchText)
+        .then(response => response.json())
+        .then(json => this.setState({
+          items: json.data,
+          isValid: true,
+          isLoading: false
+        }));
+    }
+  }
+
+  search(query) {
+    return fetch("/api/search", {
+      "method": "POST",
+      "headers": new Headers({
+        "Accept": "application/json",
+        "Content-Type": "application/json"
+      }),
+      "body": JSON.stringify({ query: query })
+    })
+  }
+
 
   render() {
-    const test = {
-      artist: "Christian Löffler",
-      title: "Beirut",
-      image_url: "https://i.scdn.co/image/ae8c03fb66b878b9e7f9d39aa2ca8a4907b1cfec",
-      bpm: "123"
-    }
+    const { searchText, items, isValid, isLoading } = this.state;
 
     return (
       <div className="container">
         <div className="field has-addons">
           <div className="control">
-            <input className="input" type="text" placeholder="Search" />
+            <input onChange={this.handleInput} value={searchText} className="input" type="text" placeholder="Search" />
           </div>
           <div className="control">
-            <a className="button is-primary">Search</a>
+            <a onClick={this.handleSearchClick} className="button is-primary">Search</a>
           </div>
         </div>
 
-          <Card {...test} />
-          <Card {...test} />
-          <Card {...test} />
-          <Card {...test} />
+        {isLoading && <div className="loader" />}
+
+        {!isLoading && isValid && items.map((item) =>
+          <Card key={item.id} {...item} />
+        )}
+
       </div>
     )
   }
