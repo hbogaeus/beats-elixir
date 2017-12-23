@@ -11,7 +11,7 @@ defmodule Beats.Search do
         %{
           id: item["id"],
           bpm: bpm,
-          href: item["href"],
+          href: get_in(item, ["external_urls", "spotify"]),
           title: item["name"],
           artist: get_in(item, ["artists", fn (:get, data, _next) -> Map.get(hd(data), "name") end ]),
           image_url: get_in(item, ["album", "images", fn (:get, data, _next) -> Map.get(hd(data), "url") end])
