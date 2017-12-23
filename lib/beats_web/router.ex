@@ -19,8 +19,9 @@ defmodule BeatsWeb.Router do
     get "/", PageController, :index
   end
 
-  # Other scopes may use custom stacks.
-  # scope "/api", BeatsWeb do
-  #   pipe_through :api
-  # end
+  scope "/api", BeatsWeb do
+    pipe_through :api
+
+    post "/search", SearchController, :search
+  end
 end

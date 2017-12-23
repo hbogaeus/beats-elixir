@@ -1,11 +1,17 @@
-defmodule Beats.Spotify do
+defmodule Beats.Search.SpotifyApi do
+    use Agent
+
+    def start_link do
+      Agent.start_link(fn -> nil end)
+    end
+
     defp encoded_id_and_secret do
         client_id = System.get_env("SPOTIFY_CLIENT_ID")
         client_secret = System.get_env("SPOTIFY_SECRET")
         Base.encode64("#{client_id}:#{client_secret}")
     end
 
-    def request_access_token do
+    defp request_access_token do
         url = "https://accounts.spotify.com/api/token"
         body = {:form, [grant_type: "client_credentials"]}
         headers = %{
@@ -42,13 +48,10 @@ defmodule Beats.Spotify do
 
         case HTTPoison.get(url, headers) do
             {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
-                body = Poison.decode!(body)
-                ids =
-                    body
-                    |> get_in(["tracks", "items"])
-                    |> Enum.map(&(&1["id"]))
-
-                {:ok, ids}
+                result =
+                  Poison.decode!(body)
+                  |> get_in(["tracks", "items"])
+                {:ok, result}
             {:ok, %HTTPoison.Response{status_code: 400}} ->
                 {:error, "Not found."}
             {:ok, %HTTPoison.Response{status_code: 429}} ->
@@ -58,7 +61,7 @@ defmodule Beats.Spotify do
         end
     end
 
-    def bpm(ids) do
+    def bpms(ids) do
         {:ok, token} = request_access_token()
         headers = %{
             "Authorization" => "Bearer #{token}"
@@ -68,8 +71,12 @@ defmodule Beats.Spotify do
 
         case HTTPoison.get(url, headers) do
             {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
-                body = Poison.decode!(body)
-                {:ok, body}
+                result =
+                  Poison.decode!(body)
+                  |> Map.get("audio_features")
+                  |> Enum.map(&(&1["tempo"]))
+                
+                {:ok, result}
             {:ok, %HTTPoison.Response{status_code: 400}} ->
                 {:error, "Not found."}
             {:ok, %HTTPoison.Response{status_code: 429}} ->
