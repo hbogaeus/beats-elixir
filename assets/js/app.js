@@ -11,7 +11,17 @@
 //
 // If you no longer want to use a dependency, remember
 // to also remove its path from "config.paths.watched".
-import "phoenix_html"
+import "phoenix_html";
+import "isomorphic-fetch";
+
+import React from "react";
+import ReactDOM from "react-dom";
+import App from "./App.jsx";
+
+ReactDOM.render(
+    <App />,
+    document.getElementById("root")
+)
 
 // Import local files
 //
