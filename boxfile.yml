@@ -22,6 +22,7 @@ run.config:
 
 deploy.config: 
     extra_steps:
+      - cd assets && npm run deploy
       - mix phx.digest
 
 web.main:
