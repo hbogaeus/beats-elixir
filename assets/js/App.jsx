@@ -12,6 +12,7 @@ class App extends Component {
     }
 
     this.handleSearchClick = this.handleSearchClick.bind(this);
+    this.handleEnterClick = this.handleEnterClick.bind(this);
     this.handleInput = this.handleInput.bind(this);
   }
 
@@ -21,10 +22,18 @@ class App extends Component {
     });
   }
 
-  handleSearchClick(event) {
+  handleEnterClick(event) {
+    event.preventDefault();
+
+    if (event.keyCode === 13) {
+      this.handleSearchClick()
+    }
+  }
+
+  handleSearchClick() {
     const { searchText, isValid, isLoading } = this.state;
 
-    if (!isLoading) {
+    if (!isLoading && searchText) {
       this.setState({
         isLoading: true,
         isValid: false
@@ -59,10 +68,10 @@ class App extends Component {
       <div className="container">
         <div className="field has-addons">
           <div className="control">
-            <input onChange={this.handleInput} value={searchText} className="input" type="text" placeholder="Search" />
+            <input onChange={this.handleInput} onKeyUp={this.handleEnterClick} value={searchText} className="input" type="text" placeholder="Search" />
           </div>
           <div className="control">
-            <a onClick={this.handleSearchClick} className="button is-primary">Search</a>
+            <a onClick={this.handleSearchClick} type="submit" className="button is-primary" tabIndex="0">Search</a>
           </div>
         </div>
 
