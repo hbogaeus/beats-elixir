@@ -70,7 +70,7 @@ class App extends Component {
         <h1 className="title is-size-1">Beats</h1> 
           <div className="search section field has-addons ">
             <div className="control">
-              <input onChange={this.handleInput} onKeyUp={this.handleEnterClick} value={searchText} className="input is-medium" type="text" placeholder="Search" />
+              <input onChange={this.handleInput} onKeyUp={this.handleEnterClick} value={searchText} className="input is-medium" type="text" placeholder="Title, artist, album..." />
             </div>
             <div className="control">
               <a onClick={this.handleSearchClick} type="submit" className={`button is-primary is-medium ${isLoading && "is-loading"}`} tabIndex="0">Search</a>
