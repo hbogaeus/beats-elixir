@@ -12,6 +12,7 @@ defmodule Beats.Application do
       supervisor(BeatsWeb.Endpoint, []),
       # Start your own worker by calling: Beats.Worker.start_link(arg1, arg2, arg3)
       # worker(Beats.Worker, [arg1, arg2, arg3]),
+      worker(Beats.Search.SpotifyApi, [])
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
