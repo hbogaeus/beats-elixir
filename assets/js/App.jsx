@@ -65,22 +65,22 @@ class App extends Component {
     const { searchText, items, isValid, isLoading } = this.state;
 
     return (
-      <div className="container">
-        <div className="field has-addons">
-          <div className="control">
-            <input onChange={this.handleInput} onKeyUp={this.handleEnterClick} value={searchText} className="input" type="text" placeholder="Search" />
+      <div className="section container main">
+        <div className="content has-text-centered">
+        <h1 className="title is-size-1">Beats</h1> 
+          <div className="search section field has-addons ">
+            <div className="control">
+              <input onChange={this.handleInput} onKeyUp={this.handleEnterClick} value={searchText} className="input is-medium" type="text" placeholder="Search" />
+            </div>
+            <div className="control">
+              <a onClick={this.handleSearchClick} type="submit" className={`button is-primary is-medium ${isLoading && "is-loading"}`} tabIndex="0">Search</a>
+            </div>
           </div>
-          <div className="control">
-            <a onClick={this.handleSearchClick} type="submit" className="button is-primary" tabIndex="0">Search</a>
-          </div>
+
+          {!isLoading && isValid && items.map((item) =>
+            <Card key={item.id} {...item} />
+          )}
         </div>
-
-        {isLoading && <div className="loader" />}
-
-        {!isLoading && isValid && items.map((item) =>
-          <Card key={item.id} {...item} />
-        )}
-
       </div>
     )
   }

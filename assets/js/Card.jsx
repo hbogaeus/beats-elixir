@@ -7,15 +7,15 @@ class Card extends PureComponent {
     return (
       <article className="media">
         <figure className="media-left">
-          <p className="image is-96x96">
+          <p className="image is-128x128">
             <img src={image_url} />
           </p>
         </figure>
         <div className="media-content">
           <p>
-            <strong>{title} - {artist}</strong>
+            <span><strong>{title} - {artist}</strong></span>
             <br />
-            {Math.round(bpm)} BPM
+            <span className="is-size-5">{Math.round(bpm)} BPM</span>
            </p>
         </div>
       </article>

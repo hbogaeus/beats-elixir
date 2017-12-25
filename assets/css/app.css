@@ -1,1 +1,9 @@
-/* This file is for your main application css. */
+.main {
+  max-width: 760px;
+  width: 760px;
+  padding: 10rem 1.5rem;
+}
+
+.search {
+  display: inline-flex !important;
+}
